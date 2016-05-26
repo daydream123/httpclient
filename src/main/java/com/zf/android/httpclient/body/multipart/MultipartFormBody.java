@@ -1,9 +1,9 @@
-package com.zf.httpclient.body.multipart;
+package com.zf.android.httpclient.body.multipart;
 
-import com.zf.httpclient.OnProgressListener;
-import com.zf.httpclient.ProgressAwareOutputStream;
-import com.zf.httpclient.body.FileBody;
-import com.zf.httpclient.body.HttpBody;
+import com.zf.android.httpclient.OnProgressListener;
+import com.zf.android.httpclient.ProgressAwareOutputStream;
+import com.zf.android.httpclient.body.FileBody;
+import com.zf.android.httpclient.body.HttpBody;
 
 import java.io.File;
 import java.io.IOException;

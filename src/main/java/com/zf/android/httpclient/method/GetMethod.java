@@ -1,4 +1,4 @@
-package com.zf.httpclient.method;
+package com.zf.android.httpclient.method;
 
 import java.util.HashMap;
 import java.util.Map;

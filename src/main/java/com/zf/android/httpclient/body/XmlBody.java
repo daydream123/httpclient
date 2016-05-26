@@ -1,6 +1,6 @@
-package com.zf.httpclient.body;
+package com.zf.android.httpclient.body;
 
-import com.zf.httpclient.ContentType;
+import com.zf.android.httpclient.ContentType;
 
 public class XmlBody extends TextBody {
 	private String xmlType = ContentType.APPLICATION_XML;

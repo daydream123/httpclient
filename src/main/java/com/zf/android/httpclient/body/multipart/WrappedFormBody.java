@@ -1,6 +1,6 @@
-package com.zf.httpclient.body.multipart;
+package com.zf.android.httpclient.body.multipart;
 
-import com.zf.httpclient.body.HttpBody;
+import com.zf.android.httpclient.body.HttpBody;
 
 class WrappedFormBody {
 	private HttpBody httpBody;

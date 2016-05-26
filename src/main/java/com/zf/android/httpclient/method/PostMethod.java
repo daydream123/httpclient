@@ -1,6 +1,6 @@
-package com.zf.httpclient.method;
+package com.zf.android.httpclient.method;
 
-import com.zf.httpclient.body.HttpBody;
+import com.zf.android.httpclient.body.HttpBody;
 
 public class PostMethod extends HttpMethod {
 	public static final String NAME = "POST";

@@ -1,12 +1,13 @@
-package com.zf.httpclient;
+package com.zf.android.httpclient;
 
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import com.zf.httpclient.body.HttpBody;
-import com.zf.httpclient.method.GetMethod;
-import com.zf.httpclient.method.HttpMethod;
-import com.zf.httpclient.method.PostMethod;
+
+import com.zf.android.httpclient.body.HttpBody;
+import com.zf.android.httpclient.method.GetMethod;
+import com.zf.android.httpclient.method.HttpMethod;
+import com.zf.android.httpclient.method.PostMethod;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

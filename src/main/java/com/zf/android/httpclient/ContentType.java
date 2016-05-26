@@ -1,4 +1,4 @@
-package com.zf.httpclient;
+package com.zf.android.httpclient;
 
 public class ContentType {
 	public static final String APPLICATION_ATOM_XML = "application/atom+xml; charset=ISO-8859-1";

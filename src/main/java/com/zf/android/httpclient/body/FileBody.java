@@ -1,8 +1,8 @@
-package com.zf.httpclient.body;
+package com.zf.android.httpclient.body;
 
-import com.zf.httpclient.ContentType;
-import com.zf.httpclient.IOUtils;
-import com.zf.httpclient.OnProgressListener;
+import com.zf.android.httpclient.ContentType;
+import com.zf.android.httpclient.IOUtils;
+import com.zf.android.httpclient.OnProgressListener;
 
 import java.io.File;
 import java.io.FileInputStream;

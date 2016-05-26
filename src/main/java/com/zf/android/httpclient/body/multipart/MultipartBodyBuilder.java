@@ -1,6 +1,5 @@
-package com.zf.httpclient.body.multipart;
-
-import com.zf.httpclient.body.HttpBody;
+package com.zf.android.httpclient.body.multipart;
+import com.zf.android.httpclient.body.HttpBody;
 
 import java.util.ArrayList;
 import java.util.List;

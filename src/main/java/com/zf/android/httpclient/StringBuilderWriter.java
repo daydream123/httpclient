@@ -1,4 +1,4 @@
-package com.zf.httpclient;
+package com.zf.android.httpclient;
 
 import java.io.Serializable;
 import java.io.Writer;

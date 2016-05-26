@@ -1,4 +1,4 @@
-package com.zf.httpclient;
+package com.zf.android.httpclient;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,4 +1,4 @@
-package com.zf.httpclient;
+package com.zf.android.httpclient;
 
 /**
  * Interface for classes that want to monitor this input stream

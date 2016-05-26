@@ -1,4 +1,4 @@
-package com.zf.httpclient.httpcache;
+package com.zf.android.httpclient.httpcache;
 
 import android.net.http.HttpResponseCache;
 

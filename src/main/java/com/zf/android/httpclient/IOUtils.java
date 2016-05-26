@@ -1,4 +1,4 @@
-package com.zf.httpclient;
+package com.zf.android.httpclient;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
