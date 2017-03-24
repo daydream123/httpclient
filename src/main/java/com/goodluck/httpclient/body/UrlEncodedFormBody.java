@@ -8,14 +8,11 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class UrlEncodedFormBody extends TextBody {
+public class UrlEncodedFormBody extends HttpBody {
 	private List<NameValuePair> nameValuePairs = new ArrayList<>();
-	
-	public UrlEncodedFormBody(){
-		super("");
-	}
 	
 	@Override
 	public String getContentType() {
@@ -26,14 +23,29 @@ public class UrlEncodedFormBody extends TextBody {
 		this.nameValuePairs = nameValuePairs;
 	}
 
+	public void setNameValuePairs(NameValuePair ... nameValuePairs) {
+		this.nameValuePairs.addAll(Arrays.asList(nameValuePairs));
+	}
+
 	@Override
 	public String getContent() {
 		try {
-			return text = buildFormDataParams();
+			return buildFormDataParams();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			return null;
+			return "";
 		}
+	}
+
+	@Override
+	public long getContentLength() {
+		try {
+			String content = buildFormDataParams();
+			return content.getBytes().length;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	@Override
@@ -44,7 +56,12 @@ public class UrlEncodedFormBody extends TextBody {
 			outputStream.flush();
 		}
 	}
-	
+
+	@Override
+	public boolean isStreaming() {
+		return false;
+	}
+
 	private String buildFormDataParams() throws UnsupportedEncodingException {
 		if(nameValuePairs != null && nameValuePairs.size() > 0){
 			StringBuilder builder = new StringBuilder();

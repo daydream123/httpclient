@@ -26,16 +26,18 @@ class MultipartFormBody extends HttpBody {
 
 	@Override
 	public long getContentLength() {
-		throw new UnsupportedOperationException("Multipart form body does not implement #getContentLength()");
+		long totalLength = 0;
+		if (bodyParts != null && bodyParts.size() > 0) {
+			for (WrappedFormBody body : bodyParts) {
+				totalLength += body.getHttpBody().getContentLength();
+			}
+		}
+		return totalLength;
 	}
 
 	@Override
 	public String getContent() {
 		throw new UnsupportedOperationException("Multipart form body does not implement #getContent()");
-	}
-
-	public List<WrappedFormBody> getBodyPorts() {
-		return bodyParts;
 	}
 
 	@Override
@@ -67,10 +69,8 @@ class MultipartFormBody extends HttpBody {
 		try {
 			StringBuilder builder = new StringBuilder();
 			builder.append("--" + boundary + "\r\n");
-			builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n");
-			builder.append("\r\n");
-			builder.append(body.getHttpBody().getContent());
-			builder.append("\r\n");
+			builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n\r\n");
+			builder.append(body.getHttpBody().getContent() + "\r\n");
 			outputStream.write(builder.toString().getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,11 +86,10 @@ class MultipartFormBody extends HttpBody {
 				FileBody fileBody = (FileBody) body.getHttpBody();
 				builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\"; filename=\"" + fileBody.getFile().getName() + "\r\n");
 			}else{
-				builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\";\r\n");
+				builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n");
 			}
 			
-			builder.append("Content-Type: " + body.getHttpBody().getContentType() + "\r\n");
-			builder.append("\r\n");
+			builder.append("Content-Type: " + body.getHttpBody().getContentType() + "\r\n\r\n\r\n");
 			outputStream.write(builder.toString().getBytes());
 			
 			if(body.getHttpBody() instanceof FileBody){
@@ -99,8 +98,10 @@ class MultipartFormBody extends HttpBody {
 				OnProgressListener listener = fileBody.getProgressListener();
 				
 				if(listener != null){
-					ProgressAwareOutputStream progressAwareOutputStream = new ProgressAwareOutputStream(outputStream,
-							uploadFile.length(), fileBody.getUploadedSize(), uploadFile.getAbsolutePath());
+					ProgressAwareOutputStream progressAwareOutputStream = new ProgressAwareOutputStream(
+							outputStream,
+							uploadFile.length(),
+							fileBody.getUploadedSize());
 					progressAwareOutputStream.setOnProgressListener(listener);
 					body.getHttpBody().writeTo(progressAwareOutputStream);
 				}else{

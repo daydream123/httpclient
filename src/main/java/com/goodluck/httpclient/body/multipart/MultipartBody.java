@@ -4,7 +4,6 @@ import com.goodluck.httpclient.body.HttpBody;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 public class MultipartBody extends HttpBody {
@@ -16,25 +15,23 @@ public class MultipartBody extends HttpBody {
 			.toCharArray();
 
 	private final MultipartBodyBuilder builder;
-	private String boundary;
 	private String contentType;
 
 	public MultipartBody() {
-		this.boundary = generateBoundary();
-		this.contentType = generateContentType();
+		String boundary = generateBoundary();
+		this.contentType = buildContentType(boundary);
 		this.builder = new MultipartBodyBuilder(boundary);
 	}
 
-	protected String generateContentType() {
-		final StringBuilder buffer = new StringBuilder();
-		buffer.append("multipart/form-data; boundary=");
-		buffer.append(boundary);
-		buffer.append("; charset=");
-		buffer.append(Charset.defaultCharset().name());
-		return buffer.toString();
+	private String buildContentType(String boundary) {
+		String contentType = "multipart/form-data; boundary=";
+		contentType += boundary;
+		contentType += "; charset=";
+		contentType += "utf-8";
+		return contentType;
 	}
 
-	protected String generateBoundary() {
+	private String generateBoundary() {
         final StringBuilder buffer = new StringBuilder();
         final Random rand = new Random();
         final int count = rand.nextInt(11) + 30; // a random size from 30 to 40

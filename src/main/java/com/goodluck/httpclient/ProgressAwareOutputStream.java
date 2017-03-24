@@ -8,18 +8,13 @@ public class ProgressAwareOutputStream extends OutputStream {
 	private long fileSize;
 	private long uploadedSize;
 	
-	/**
-	 * Identify which download is on progress, it can be file absolute path. 
-	 */
-	private String tag;
 	private long lastPercent;
 	private OnProgressListener listener;
 	
-	public ProgressAwareOutputStream(OutputStream out, long fileSize, long uploadedSize, String tag){
+	public ProgressAwareOutputStream(OutputStream out, long fileSize, long uploadedSize){
 		this.outputStream = out;
 		this.fileSize = fileSize;
 		this.uploadedSize = uploadedSize;
-		this.tag = tag;
 	}
 	
 	public void setOnProgressListener(OnProgressListener listener) {
@@ -34,7 +29,7 @@ public class ProgressAwareOutputStream extends OutputStream {
 			checkProgress();
 		} catch (IOException e) {
 			e.printStackTrace();
-			listener.onError(e.getMessage(), tag);
+			listener.onError(e.getMessage());
 		}
 	}
 	
@@ -45,7 +40,7 @@ public class ProgressAwareOutputStream extends OutputStream {
 			uploadedSize += count;
 			checkProgress();
 		} catch (IOException e){
-			listener.onError(e.getMessage(), tag);
+			listener.onError(e.getMessage());
 		}
 	}
 	
@@ -56,7 +51,7 @@ public class ProgressAwareOutputStream extends OutputStream {
 			uploadedSize += buffer.length;
 			checkProgress();
 		}catch(IOException e){
-			listener.onError(e.getMessage(), tag);
+			listener.onError(e.getMessage());
 		}
 	}
 	
@@ -65,7 +60,7 @@ public class ProgressAwareOutputStream extends OutputStream {
 		try{
 			outputStream.close();
 		}catch(IOException e){
-			listener.onError(e.getMessage(), tag);
+			listener.onError(e.getMessage());
 		}
 	}
 	
@@ -80,13 +75,13 @@ public class ProgressAwareOutputStream extends OutputStream {
 		if (percent - lastPercent >= 1) {
 			lastPercent = percent;
 			if (listener != null){
-				listener.onProgress(percent, tag);
+				listener.onProgress(percent);
 			}
 		}
 		
 		// check whether download is completed
 		if(percent == 100 && listener != null){
-			listener.onCompleted(tag);
+			listener.onCompleted();
 		}
 	}
 

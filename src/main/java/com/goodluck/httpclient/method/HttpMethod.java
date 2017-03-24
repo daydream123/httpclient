@@ -12,7 +12,6 @@ import java.util.Map;
 
 public abstract class HttpMethod {
     protected String url;
-    protected Map<String, String> params = new HashMap<>();
     protected Map<String, String> headers = new HashMap<>();
 
     private HttpURLConnection connection = null;
@@ -27,27 +26,7 @@ public abstract class HttpMethod {
 
     public abstract String getName();
 
-    public void setParam(String name, String value) {
-        params.clear();
-        params.put(name, value);
-    }
-
-    public void setParams(Map<String, String> formData){
-        this.params.clear();
-        this.params.putAll(formData);
-    }
-
-    public void addParam(String name, String value){
-        params.put(name, value);
-    }
-
-    public void addParams(Map<String, String> formData){
-        this.params.putAll(formData);
-    }
-
-    public Map<String, String> getParams(){
-        return params;
-    }
+    public abstract URL buildURL() throws MalformedURLException;
 
     public void setHeader(String name, String value) {
         this.headers.clear();
@@ -97,18 +76,6 @@ public abstract class HttpMethod {
         }
 
         return connection.getResponseCode();
-    }
-
-    public URL buildUrlWithParams() throws MalformedURLException {
-        if (params == null || params.size() == 0) {
-            return new URL(url);
-        }
-
-        StringBuilder builder = new StringBuilder();
-        for (String key : params.keySet()) {
-            builder.append(key + "=" + params.get(key) + "&");
-        }
-        return new URL(url + "?" + builder.substring(0, builder.length() - 1));
     }
 
     public InputStream getResponseBodyAsStream() throws IOException {

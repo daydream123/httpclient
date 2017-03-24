@@ -32,6 +32,10 @@ public class FileBody extends HttpBody {
     	this.file = new File(filePath);
     	this.uploadedSize = uploadedSize;
     	this.progressListener = listener;
+
+		if (!file.exists()) {
+			throw new RuntimeException("file to upload does not exist: " + filePath);
+		}
     }
     
 	@Override
