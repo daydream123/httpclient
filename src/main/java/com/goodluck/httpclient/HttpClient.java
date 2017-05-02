@@ -78,7 +78,7 @@ public class HttpClient {
             PostMethod httpPost = (PostMethod) httpMethod;
             HttpBody httpBody = httpPost.getBody();
             connection.setRequestProperty("content-type", httpBody.getContentType());
-//            connection.setRequestProperty("content-length", String.valueOf(httpBody.getContentLength()));
+            connection.setRequestProperty("content-length", String.valueOf(httpBody.getContentLength()));
 
             // disable cache for write output stream
             if (httpBody.isStreaming()) {

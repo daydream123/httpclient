@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+/**
+ * Accept a list of {@link WrappedFormBody} and boundary from construction parameters,
+ * and it finally was used to write multipart body into OutputStream of {@link java.net.HttpURLConnection}
+ */
 class MultipartFormBody extends HttpBody {
 	private List<WrappedFormBody> bodyParts;
 	private String boundary;
@@ -67,11 +71,10 @@ class MultipartFormBody extends HttpBody {
 
 	private void addTextPart(OutputStream outputStream, WrappedFormBody body) {
 		try {
-			StringBuilder builder = new StringBuilder();
-			builder.append("--" + boundary + "\r\n");
-			builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n\r\n");
-			builder.append(body.getHttpBody().getContent() + "\r\n");
-			outputStream.write(builder.toString().getBytes());
+			String builder = ("--" + boundary + "\r\n")
+					+ "Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n\r\n" +
+					body.getHttpBody().getContent() + "\r\n";
+			outputStream.write(builder.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,16 +83,16 @@ class MultipartFormBody extends HttpBody {
 	private void addBinaryPart(OutputStream outputStream, WrappedFormBody body) {
 		try {
 			StringBuilder builder = new StringBuilder();
-			builder.append("--" + boundary + "\r\n");
+			builder.append("--").append(boundary).append("\r\n");
 			
 			if(body.getHttpBody() instanceof FileBody){
 				FileBody fileBody = (FileBody) body.getHttpBody();
-				builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\"; filename=\"" + fileBody.getFile().getName() + "\r\n");
+				builder.append("Content-Disposition: form-data; name=\"").append(body.getFieldName()).append("\"; filename=\"").append(fileBody.getFile().getName()).append("\r\n");
 			}else{
-				builder.append("Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n");
+				builder.append("Content-Disposition: form-data; name=\"").append(body.getFieldName()).append("\r\n");
 			}
 			
-			builder.append("Content-Type: " + body.getHttpBody().getContentType() + "\r\n\r\n\r\n");
+			builder.append("Content-Type: ").append(body.getHttpBody().getContentType()).append("\r\n\r\n\r\n");
 			outputStream.write(builder.toString().getBytes());
 			
 			if(body.getHttpBody() instanceof FileBody){
@@ -115,5 +118,4 @@ class MultipartFormBody extends HttpBody {
 			e.printStackTrace();
 		}
 	}
-	
 }

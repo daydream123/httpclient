@@ -3,8 +3,7 @@ package com.goodluck.httpclient.body.multipart;
 import com.goodluck.httpclient.body.HttpBody;
 
 /**
- * This is part of the multipart form bodies,
- * and wil be saved in {@link java.util.List} in {@link MultipartFormBody}
+ * This is part of {@link MultipartFormBody} as a list.
  */
 class WrappedFormBody {
 	private String fieldName;

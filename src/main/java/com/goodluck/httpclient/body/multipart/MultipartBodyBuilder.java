@@ -5,6 +5,10 @@ import com.goodluck.httpclient.body.HttpBody;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A builder like StringBuilder but it's data type is WrappedFormBody
+ * and allowed to convert it into {@link MultipartFormBody} through {@link #build()}.
+ */
 class MultipartBodyBuilder {
 	private List<WrappedFormBody> bodyParts = new ArrayList<>();
 	private String boundary;
@@ -16,7 +20,11 @@ class MultipartBodyBuilder {
 
 	public MultipartBodyBuilder addPart(String fieldName, final HttpBody bodyPart) {
 		if (bodyPart == null) {
-			return this;
+			throw new IllegalArgumentException("body part cannot be null");
+		}
+
+		if (bodyPart instanceof MultipartBody) {
+			throw new IllegalArgumentException("multipart body cannot accept anther multipart body");
 		}
 		this.bodyParts.add(new WrappedFormBody(fieldName, bodyPart));
 		return this;
