@@ -1,7 +1,5 @@
 package com.goodluck.httpclient;
 
-import android.os.Build;
-
 import com.goodluck.httpclient.body.HttpBody;
 import com.goodluck.httpclient.method.HttpMethod;
 import com.goodluck.httpclient.method.PostMethod;
@@ -28,8 +26,6 @@ import javax.net.ssl.X509TrustManager;
  */
 
 public class HttpClient {
-    private static final String TAG = "httpclient";
-
     private int timeout;
 
     private HttpParams httpParams = new DefaultHttpParams();
@@ -77,16 +73,13 @@ public class HttpClient {
             // set content type for POST
             PostMethod httpPost = (PostMethod) httpMethod;
             HttpBody httpBody = httpPost.getBody();
+            connection.setRequestProperty("Charset", "UTF-8");
+
             connection.setRequestProperty("content-type", httpBody.getContentType());
-            connection.setRequestProperty("content-length", String.valueOf(httpBody.getContentLength()));
 
             // disable cache for write output stream
             if (httpBody.isStreaming()) {
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                    connection.setFixedLengthStreamingMode(0);
-                } else {
-                    connection.setChunkedStreamingMode(0);
-                }
+                connection.setChunkedStreamingMode(0);
             }
         }
 

@@ -23,10 +23,4 @@ public class JsonBody extends TextBody {
 	public String getContent() {
 		return text;
 	}
-
-	@Override
-	public long getContentLength() {
-		return text.getBytes().length;
-	}
-
 }

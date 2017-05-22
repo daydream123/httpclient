@@ -29,6 +29,11 @@ class MultipartFormBody extends HttpBody {
 	}
 
 	@Override
+	public String getContent() {
+		throw new UnsupportedOperationException("Multipart form body does not implement #getContent()");
+	}
+
+	@Override
 	public long getContentLength() {
 		long totalLength = 0;
 		if (bodyParts != null && bodyParts.size() > 0) {
@@ -37,11 +42,6 @@ class MultipartFormBody extends HttpBody {
 			}
 		}
 		return totalLength;
-	}
-
-	@Override
-	public String getContent() {
-		throw new UnsupportedOperationException("Multipart form body does not implement #getContent()");
 	}
 
 	@Override
@@ -54,7 +54,9 @@ class MultipartFormBody extends HttpBody {
 					addTextPart(outputStream, body);
 				}
 			}
-			outputStream.write(("--" + boundary + "--\r\n").getBytes());
+
+			String end = "------" + boundary + "--";
+			outputStream.write(end.getBytes());
 			outputStream.flush();
 		}
 	}
@@ -71,10 +73,14 @@ class MultipartFormBody extends HttpBody {
 
 	private void addTextPart(OutputStream outputStream, WrappedFormBody body) {
 		try {
-			String builder = ("--" + boundary + "\r\n")
-					+ "Content-Disposition: form-data; name=\"" + body.getFieldName() + "\r\n\r\n" +
-					body.getHttpBody().getContent() + "\r\n";
-			outputStream.write(builder.getBytes());
+			String content = "------" + boundary;
+			content += "\r\n";
+			content += "Content-Disposition: form-data; name=\"" + body.getFieldName() + "\"";
+			content += "\r\n\r\n";
+			content += body.getHttpBody().getContent();
+			content += "\r\n";
+
+			outputStream.write(content.getBytes());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,19 +88,19 @@ class MultipartFormBody extends HttpBody {
 
 	private void addBinaryPart(OutputStream outputStream, WrappedFormBody body) {
 		try {
-			StringBuilder builder = new StringBuilder();
-			builder.append("--").append(boundary).append("\r\n");
-			
-			if(body.getHttpBody() instanceof FileBody){
+			String content = "------" + boundary;
+			content += "\r\n";
+			content += "Content-Disposition: form-data;";
+
+			if (body.getHttpBody() instanceof FileBody) {
 				FileBody fileBody = (FileBody) body.getHttpBody();
-				builder.append("Content-Disposition: form-data; name=\"").append(body.getFieldName()).append("\"; filename=\"").append(fileBody.getFile().getName()).append("\r\n");
-			}else{
-				builder.append("Content-Disposition: form-data; name=\"").append(body.getFieldName()).append("\r\n");
+				content += "name=\"" + body.getFieldName() + "\"; filename=\"" + fileBody.getFile().getName() + "\"";
 			}
-			
-			builder.append("Content-Type: ").append(body.getHttpBody().getContentType()).append("\r\n\r\n\r\n");
-			outputStream.write(builder.toString().getBytes());
-			
+			content += "\r\n";
+			content += "Content-Type: " + body.getHttpBody().getContentType();
+			content += "\r\n\r\n\r\n";
+			outputStream.write(content.getBytes());
+
 			if(body.getHttpBody() instanceof FileBody){
 				FileBody fileBody = (FileBody) body.getHttpBody();
 				File uploadFile = fileBody.getFile();

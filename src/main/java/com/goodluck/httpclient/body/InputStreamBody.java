@@ -2,6 +2,7 @@ package com.goodluck.httpclient.body;
 
 import com.goodluck.httpclient.ContentType;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,11 +27,18 @@ public class InputStreamBody extends HttpBody {
 	@Override
 	public long getContentLength() {
 		try {
-			return inputStream.available();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = inputStream.read(buffer)) != -1) {
+				bos.write(buffer, 0, len);
+			}
+			return bos.toByteArray().length;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return 0;
 		}
+
+		return 0;
 	}
 
 	@Override

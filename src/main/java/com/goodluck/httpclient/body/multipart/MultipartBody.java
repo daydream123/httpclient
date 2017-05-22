@@ -25,9 +25,7 @@ public class MultipartBody extends HttpBody {
 
 	private String buildContentType(String boundary) {
 		String contentType = "multipart/form-data; boundary=";
-		contentType += boundary;
-		contentType += "; charset=";
-		contentType += "utf-8";
+		contentType += "----" + boundary;
 		return contentType;
 	}
 
