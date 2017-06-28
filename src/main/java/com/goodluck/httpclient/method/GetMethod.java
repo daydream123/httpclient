@@ -27,7 +27,7 @@ public class GetMethod extends HttpMethod {
 
 		StringBuilder builder = new StringBuilder();
 		for (String key : params.keySet()) {
-			builder.append(key + "=" + params.get(key) + "&");
+			builder.append(key).append("=").append(params.get(key)).append("&");
 		}
 		return new URL(url + "?" + builder.substring(0, builder.length() - 1));
 	}

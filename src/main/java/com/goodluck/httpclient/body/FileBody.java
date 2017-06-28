@@ -1,7 +1,7 @@
 package com.goodluck.httpclient.body;
 
 import com.goodluck.httpclient.ContentType;
-import com.goodluck.httpclient.OnProgressListener;
+import com.goodluck.httpclient.utils.OnProgressListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class FileBody extends HttpBody {
-    protected final File file;
+    private final File file;
     private long uploadedSize;
     private OnProgressListener progressListener;
 
@@ -109,16 +109,16 @@ public class FileBody extends HttpBody {
         return progressListener;
     }
 
-    private long copy(InputStream input, OutputStream output) throws IOException {
-        long count = 0;
-        int readCount;
-        byte[] buffer = new byte[1024 * 4];
-        while ((readCount = input.read(buffer)) != -1) {
-            output.write(buffer, 0, readCount);
-            count += readCount;
-        }
-        output.flush();
-        return count;
-    }
+	private long copy(InputStream input, OutputStream output) throws IOException {
+		long count = 0;
+		int readCount;
+		byte[] buffer = new byte[1024 * 4];
+		while ((readCount = input.read(buffer)) != -1) {
+			output.write(buffer, 0, readCount);
+			count += readCount;
+		}
+		output.flush();
+		return count;
+	}
 
 }

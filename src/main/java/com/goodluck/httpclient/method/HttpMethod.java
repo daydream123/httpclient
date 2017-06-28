@@ -13,8 +13,8 @@ import java.util.Map;
 public abstract class HttpMethod {
     protected String url;
     protected Map<String, String> headers = new HashMap<>();
-
     private HttpURLConnection connection = null;
+    private boolean ignoreCert = false;
 
     public HttpMethod(String url) {
         this.url = url;
@@ -27,6 +27,14 @@ public abstract class HttpMethod {
     public abstract String getName();
 
     public abstract URL buildURL() throws MalformedURLException;
+
+    public boolean isIgnoreCert() {
+        return ignoreCert;
+    }
+
+    public void setIgnoreCert(boolean ignoreCert) {
+        this.ignoreCert = ignoreCert;
+    }
 
     public void setHeader(String name, String value) {
         this.headers.clear();
@@ -66,6 +74,15 @@ public abstract class HttpMethod {
     }
 
     /**
+     * Return http url connection
+     *
+     * @return http connection
+     */
+    public HttpURLConnection getConnection() {
+        return connection;
+    }
+
+    /**
      * Returns the response status code.
      *
      * @return the status code associated with the latest response.
@@ -94,12 +111,19 @@ public abstract class HttpMethod {
         byte[] buffer = new byte[4096];
         int len;
 
-        InputStream inputStream = connection.getInputStream();
-        while ((len = inputStream.read(buffer)) > 0) {
-            outputStream.write(buffer, 0, len);
+        InputStream inputStream = null;
+        try {
+            inputStream = connection.getInputStream();
+            while ((len = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, len);
+            }
+            outputStream.close();
+            return outputStream.toByteArray();
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
-        outputStream.close();
-        return outputStream.toByteArray();
     }
 
     public String getResponseBodyAsString() throws IOException {

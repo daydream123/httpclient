@@ -68,7 +68,7 @@ public class UrlEncodedFormBody extends HttpBody {
 			for (NameValuePair nameValue : nameValuePairs) {
 				String encodedKey = URLEncoder.encode(nameValue.getName(), "utf-8");
 				String encodedValue = URLEncoder.encode(nameValue.getValue(), "utf-8");
-				builder.append(encodedKey + "=" + encodedValue + "&");
+				builder.append(encodedKey).append("=").append(encodedValue).append("&");
 			}
 			return builder.substring(0, builder.length() - 1);
 		}

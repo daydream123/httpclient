@@ -98,7 +98,9 @@ public class NameValuePair implements Serializable {
 
         NameValuePair that = (NameValuePair) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
         return value != null ? value.equals(that.value) : that.value == null;
 
     }

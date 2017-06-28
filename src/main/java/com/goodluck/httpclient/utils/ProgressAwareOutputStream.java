@@ -1,8 +1,6 @@
-package com.goodluck.httpclient;
+package com.goodluck.httpclient.utils;
 
 import android.support.annotation.NonNull;
-
-import com.goodluck.httpclient.utils.OnProgressListener;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,7 +9,7 @@ public class ProgressAwareOutputStream extends OutputStream {
 	private OutputStream outputStream;
 	private long fileSize;
 	private long uploadedSize;
-	
+
 	private long lastPercent;
 	private OnProgressListener listener;
 	

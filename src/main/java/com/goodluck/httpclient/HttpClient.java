@@ -1,6 +1,7 @@
 package com.goodluck.httpclient;
 
 import com.goodluck.httpclient.body.HttpBody;
+import com.goodluck.httpclient.body.multipart.MultipartBody;
 import com.goodluck.httpclient.method.HttpMethod;
 import com.goodluck.httpclient.method.PostMethod;
 import com.goodluck.httpclient.params.DefaultHttpParams;
@@ -38,19 +39,15 @@ public class HttpClient {
         this.timeout = timeout;
     }
 
-    /**
-     * Called once http url connection was established.
-     *
-     * @param connection
-     */
-    protected void onUrlConnectionEstablished(HttpURLConnection connection) {
-    }
-
     public int executeMethod(HttpMethod httpMethod) throws IOException {
         URL url = httpMethod.buildURL();
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        onUrlConnectionEstablished(connection);
+
+        // ignore certificate
+        if (httpMethod.isIgnoreCert()) {
+            trustAllHosts(connection);
+        }
 
         // only "POST" method need setDoInput(true) and setDoOutput(true)
         if (PostMethod.NAME.equals(httpMethod.getName())) {
@@ -76,6 +73,9 @@ public class HttpClient {
             connection.setRequestProperty("Charset", "UTF-8");
 
             connection.setRequestProperty("content-type", httpBody.getContentType());
+            if (!(httpBody instanceof MultipartBody)) {
+                connection.setRequestProperty("content-length", String.valueOf(httpBody.getContentLength()));
+            }
 
             // disable cache for write output stream
             if (httpBody.isStreaming()) {

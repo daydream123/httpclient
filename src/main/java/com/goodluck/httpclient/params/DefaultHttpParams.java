@@ -1,12 +1,11 @@
 package com.goodluck.httpclient.params;
-
 import android.os.Build;
 
 /**
  * Created by zhangfei on 2017/3/12.
  */
 
-public class DefaultHttpParams extends HttpParams{
+public class DefaultHttpParams extends HttpParams {
 
     public DefaultHttpParams(){
         // have bugs in early os version

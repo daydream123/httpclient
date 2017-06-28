@@ -15,6 +15,7 @@ import com.goodluck.httpclient.body.XmlBody;
 import com.goodluck.httpclient.body.multipart.MultipartBody;
 import com.goodluck.httpclient.method.GetMethod;
 import com.goodluck.httpclient.method.PostMethod;
+import com.goodluck.httpclient.utils.OnProgressListener;
 
 import junit.framework.Assert;
 

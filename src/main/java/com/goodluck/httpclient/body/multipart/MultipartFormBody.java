@@ -1,9 +1,9 @@
 package com.goodluck.httpclient.body.multipart;
 
-import com.goodluck.httpclient.OnProgressListener;
 import com.goodluck.httpclient.ProgressAwareOutputStream;
 import com.goodluck.httpclient.body.FileBody;
 import com.goodluck.httpclient.body.HttpBody;
+import com.goodluck.httpclient.utils.OnProgressListener;
 
 import java.io.File;
 import java.io.IOException;

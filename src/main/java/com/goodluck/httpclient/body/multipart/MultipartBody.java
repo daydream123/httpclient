@@ -30,14 +30,14 @@ public class MultipartBody extends HttpBody {
 	}
 
 	private String generateBoundary() {
-        final StringBuilder buffer = new StringBuilder();
-        final Random rand = new Random();
-        final int count = rand.nextInt(11) + 30; // a random size from 30 to 40
-        for (int i = 0; i < count; i++) {
-            buffer.append(MULTIPART_CHARS[rand.nextInt(MULTIPART_CHARS.length)]);
-        }
-        return buffer.toString();
-    }
+		final StringBuilder buffer = new StringBuilder();
+		final Random rand = new Random();
+		final int count = rand.nextInt(11) + 30; // a random size from 30 to 40
+		for (int i = 0; i < count; i++) {
+			buffer.append(MULTIPART_CHARS[rand.nextInt(MULTIPART_CHARS.length)]);
+		}
+		return buffer.toString();
+	}
 
 	public MultipartBodyBuilder addPart(String key, HttpBody httpBody) {
 		return builder.addPart(key, httpBody);
