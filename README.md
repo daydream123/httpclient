@@ -80,6 +80,7 @@ public void testHttpPostJSON() throws IOException {
     Assert.assertEquals(response, RESPONSE);
 }
 
+@Test
 public void testHttpPosFile() throws IOException {
     PostMethod method = new PostMethod("http://10.1.158.59:8088/post/file");
     method.setBody(new FileBody("G:\\sticky\\src\\Main.java", 0, new OnProgressListener() {
